@@ -71,4 +71,22 @@ router.post('/template', (req, res) => {
     }
 });
 
+router.get('/template', (req, res) => {
+    Template.find({}, (err, templates) => {
+        if (err) {
+            res.send({
+                status: false,
+                message: err
+            });
+        } else {
+           res.json({
+                status: true,
+                data: {
+                    templates
+                }
+            });
+        }
+    });
+});
+
 export default router;
