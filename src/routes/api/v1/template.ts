@@ -4,7 +4,7 @@ import Template from '../../../models/template';
 
 const router = express.Router();
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
     try {
         if(!req.files) {
             res.send({
@@ -32,7 +32,7 @@ router.post('/', (req, res) => {
                 size,
             })
             
-            template.save();
+            await template.save();
 
             //send response
             res.send({

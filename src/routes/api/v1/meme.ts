@@ -35,4 +35,22 @@ router.post('/', async (req, res) => {
     });
 });
 
+router.get('/', (req, res) => {
+    Meme.find({}, (err, memes) => {
+        if (err) {
+            res.send({
+                status: false,
+                message: err
+            });
+        } else {
+           res.json({
+                status: true,
+                data: {
+                    memes
+                }
+            });
+        }
+    });
+});
+
 export default router;
