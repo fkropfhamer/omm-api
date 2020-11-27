@@ -1,30 +1,10 @@
 import express from 'express';
-import User from '../../models/user';
 import { v4 as uuidv4 } from 'uuid';
-import Template from '../../models/template';
+import Template from '../../../models/template';
 
 const router = express.Router();
 
-router.get('/', (req, res) => res.json({status: 'ok'}));
-
-router.put('/user', (req, res) => {
-    const user = new User({
-        name: 'testuser123',
-        password: '123'
-    });
-
-    user.save((err) => {
-        if (err) {
-            console.log(err)
-
-            res.json({err})
-        } else {
-            res.json({status: 'success'});
-        }
-    })
-});
-
-router.post('/template', (req, res) => {
+router.post('/', (req, res) => {
     try {
         if(!req.files) {
             res.send({
@@ -71,7 +51,7 @@ router.post('/template', (req, res) => {
     }
 });
 
-router.get('/template', (req, res) => {
+router.get('/', (req, res) => {
     Template.find({}, (err, templates) => {
         if (err) {
             res.send({
