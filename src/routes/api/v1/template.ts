@@ -31,7 +31,7 @@ router.post('/', async (req, res) => {
                 mimetype,
                 size,
             })
-            
+
             await template.save();
 
             //send response
@@ -39,6 +39,7 @@ router.post('/', async (req, res) => {
                 status: true,
                 message: 'File is uploaded',
                 data: {
+                    id: template.id,
                     url,
                     name,
                     mimetype,
@@ -52,21 +53,41 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/', (req, res) => {
-    Template.find({}, (err, templates) => {
-        if (err) {
-            res.send({
-                status: false,
-                message: err
-            });
-        } else {
-           res.json({
-                status: true,
-                data: {
-                    templates
-                }
-            });
-        }
-    });
+    if (req.query.id) {
+        Template.findById(req.query.id, (err, template) => {
+            if (err) {
+                res.send({
+                    status: false,
+                    message: err
+                });
+            } else {
+               res.json({
+                    status: true,
+                    data: {
+                        template
+                    }
+                });
+            }
+        })
+    } else {
+        Template.find({}, (err, templates) => {
+            if (err) {
+                res.send({
+                    status: false,
+                    message: err
+                });
+            } else {
+               res.json({
+                    status: true,
+                    data: {
+                        templates
+                    }
+                });
+            }
+        });
+    }
+
+    
 });
 
 export default router;
