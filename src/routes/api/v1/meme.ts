@@ -1,6 +1,7 @@
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import Jimp from 'jimp';
+import Meme from '../../../models/meme';
 
 const router = express.Router();
 
@@ -16,6 +17,13 @@ router.post('/', async (req, res) => {
     const fileUrl = 'http://localhost:8000/uploads/memes/' + fileName;
 
     await image.writeAsync('./uploads/memes/' + fileName);
+
+    const meme = new Meme({
+        url: fileUrl,
+        name,
+    })
+
+    await meme.save();
 
     res.json({
         status: true,
