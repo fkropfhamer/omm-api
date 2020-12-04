@@ -1,5 +1,5 @@
 import app from './app';
-import { connectDb } from './mongo';
+import { connectDb } from './db';
 
 const PORT = 8000;
 
