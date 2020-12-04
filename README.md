@@ -4,12 +4,13 @@
 required:
 - node 
 - mongodb 
+- yarn
 
 
-`npm install`
+`yarn install`
 
 ## START
-`npm run start`
+`yarn start`
 
 ## TEST
-`npm run test`
+`yarn test`
