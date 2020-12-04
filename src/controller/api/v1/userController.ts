@@ -2,9 +2,7 @@ import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import User from '../../../models/user';
 
-const router = express.Router();
-
-router.put('/user', (req, res) => {
+function put(req: express.Request, res: express.Response) {
     const user = new User({
         name: 'testuser123',
         password: '123'
@@ -19,6 +17,8 @@ router.put('/user', (req, res) => {
             res.json({status: 'success'});
         }
     })
-});
+}
 
-export default router;
+export default {
+    put
+}

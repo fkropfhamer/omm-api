@@ -2,9 +2,8 @@ import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import Template from '../../../models/template';
 
-const router = express.Router();
 
-router.post('/', async (req, res) => {
+async function post(req: express.Request, res: express.Response) {
     try {
         if(!req.files) {
             res.send({
@@ -50,9 +49,9 @@ router.post('/', async (req, res) => {
     } catch (err) {
         res.status(500).send(err);
     }
-});
+}
 
-router.get('/', (req, res) => {
+function get(req: express.Request, res: express.Response) {
     if (req.query.id) {
         Template.findById(req.query.id, (err, template) => {
             if (err) {
@@ -88,6 +87,9 @@ router.get('/', (req, res) => {
     }
 
     
-});
+}
 
-export default router;
+export default {
+    post,
+    get
+}
