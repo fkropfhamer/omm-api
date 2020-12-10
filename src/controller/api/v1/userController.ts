@@ -1,7 +1,7 @@
 import {Request, Response} from 'express';
 import User from '../../../models/user';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import { generateJWT } from '../../../authenticaton';
 
 async function put(req: Request, res: Response) {
     try {
@@ -37,7 +37,7 @@ async function authenticate(req: Request, res: Response) {
         if (user) {
             if (await bcrypt.compare(password, user.password)) {
 
-                const token = jwt.sign({ sub: user._id }, 'fdadfafadsvcdafg', { expiresIn: '7d' });
+                const token = generateJWT({ sub: user._id });
 
                 res.json({
                     status: true,
