@@ -13,7 +13,7 @@ app.use(fileUpload({
 
 app.use(express.json());
 
-app.use('/uploads', express.static('uploads'));
+//app.use('/uploads', express.static('uploads'));
 
 app.use('/status', (req, res) => res.json({status: 'ok'}));
 

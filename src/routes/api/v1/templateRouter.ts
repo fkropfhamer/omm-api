@@ -7,4 +7,6 @@ router.post('/', templateController.post);
 
 router.get('/', templateController.get);
 
+router.get('/image/:id', templateController.image);
+
 export default router;

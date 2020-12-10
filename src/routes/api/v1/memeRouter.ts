@@ -8,4 +8,6 @@ router.post('/', memeController.post);
 
 router.get('/', memeController.get);
 
+router.get('/image/:id', memeController.image);
+
 export default router;
