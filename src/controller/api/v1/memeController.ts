@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
 import Jimp from 'jimp';
-import express from 'express';
+import {Request, Response} from 'express';
 import Meme from '../../../models/meme';
 
-async function post(req: express.Request, res: express.Response) {
+async function post(req: Request, res: Response) {
     try {
         const {url = '', bottom = '', top = '', name = uuidv4()} = req.body;
 
@@ -39,7 +39,7 @@ async function post(req: express.Request, res: express.Response) {
     }
 }
 
-function get(req: express.Request, res: express.Response) {
+function get(req: Request, res: Response) {
     if (req.query.id) {
         Meme.findById(req.query.id, (err, meme) => {
             if (err) {

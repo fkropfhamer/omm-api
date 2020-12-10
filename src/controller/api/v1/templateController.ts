@@ -1,9 +1,9 @@
-import express from 'express';
+import {Request, Response} from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import Template from '../../../models/template';
 
 
-async function post(req: express.Request, res: express.Response) {
+async function post(req: Request, res: Response) {
     try {
         if(!req.files) {
             res.send({
@@ -51,7 +51,7 @@ async function post(req: express.Request, res: express.Response) {
     }
 }
 
-function get(req: express.Request, res: express.Response) {
+function get(req: Request, res: Response) {
     if (req.query.id) {
         Template.findById(req.query.id, (err, template) => {
             if (err) {

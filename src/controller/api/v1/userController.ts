@@ -1,9 +1,9 @@
-import express from 'express';
+import {Request, Response} from 'express';
 import User from '../../../models/user';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-async function put(req: express.Request, res: express.Response) {
+async function put(req: Request, res: Response) {
     try {
         const { username, password } = req.body;
 
@@ -26,7 +26,7 @@ async function put(req: express.Request, res: express.Response) {
     }   
 }
 
-async function authenticate(req: express.Request, res: express.Response) {
+async function authenticate(req: Request, res: Response) {
     try {
         const { username, password } = req.body;
 
@@ -64,7 +64,7 @@ async function authenticate(req: express.Request, res: express.Response) {
     }   
 }
 
-async function me(req: express.Request, res: express.Response) {
+async function me(req: Request, res: Response) {
     res.json({
         data: res.locals.user
     })
