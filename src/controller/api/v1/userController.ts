@@ -53,7 +53,7 @@ async function authenticate(req: Request, res: Response) {
         } else {
             res.json({
                 status: false,
-                message: 'no found',
+                message: 'not found',
             });
         }
 
