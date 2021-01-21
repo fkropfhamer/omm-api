@@ -65,10 +65,29 @@ async function authenticate(req: Request, res: Response) {
 }
 
 async function me(req: Request, res: Response) {
-    res.json({
-        status: true,
-        data: res.locals.user
-    })
+    try {
+        const user = await User.findById(res.locals.user.sub) as any;
+
+        if (user) {
+            const data = {
+                id: user._id,
+                username: user.username
+            }
+
+            res.json({
+                status: true,
+                data
+            })
+        } else {
+            res.json({
+                status: false,
+                message: "user not found",
+            });
+        }
+    } catch(err) {
+        res.status(500).send(err);
+        console.log(err);
+    }
 }
 
 export default {
