@@ -46,13 +46,13 @@ async function authenticate(req: Request, res: Response) {
                 });
             } else {
                 res.json({
-                    status: true,
+                    status: false,
                     message: 'wrong password',
                 });
             }
         } else {
             res.json({
-                status: true,
+                status: false,
                 message: 'no found',
             });
         }
@@ -66,6 +66,7 @@ async function authenticate(req: Request, res: Response) {
 
 async function me(req: Request, res: Response) {
     res.json({
+        status: true,
         data: res.locals.user
     })
 }

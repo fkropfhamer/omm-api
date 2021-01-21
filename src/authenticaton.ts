@@ -4,7 +4,7 @@ import { Request, Response, NextFunction } from "express"
 const secret = 'fdadfafadsvcdafg';
 
 export function generateJWT(data: any) {
-    jwt.sign(data, secret, { expiresIn: '7d' });
+    return jwt.sign(data, secret, { expiresIn: '7d' });
 }
 
 export function authenticated(req: Request, res: Response, next: NextFunction) {
