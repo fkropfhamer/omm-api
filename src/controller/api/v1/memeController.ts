@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import Jimp from "jimp";
 import { Request, Response } from "express";
 import Meme from "../../../models/meme";
-import APIFeatures from "../../../utils/APIFeatures";
+import APIfeatures from "../../../utils/APIfeatures";
 import { resolve } from "path";
 
 async function post(req: Request, res: Response) {
@@ -50,31 +50,47 @@ async function post(req: Request, res: Response) {
     console.log(err);
   }
 }
-
-async function get(req: Request, res: Response) {
+async function getAll(req: Request, res: Response) {
   try {
-    if (req.query.id && typeof req.query.id === "string") {
-      const meme = await Meme.findOne({ id: req.query.id }).exec();
-      if (meme) {
-        res.json({
-          status: true,
-          data: {
-            meme,
-          },
-        });
-      } else {
-        res.send({
-          status: false,
-          message: "meme not found",
-        });
-      }
-    } else {
-      const memes = await Meme.find({}).exec();
+    const features = new APIfeatures(
+      //query middleware is excuted here
+      Meme.find(),
+      req.query
+    )
+      .filter()
+      .sort()
+      .select()
+      .paginate();
+    const memes = await features.query_db;
+
+    res.json({
+      status: true,
+      data: {
+        memes,
+      },
+    });
+  } catch (err) {
+    res.status(500).send(err);
+    console.log(err);
+  }
+}
+async function getOne(req: Request, res: Response) {
+  try {
+    console.log(req.params.id);
+    const meme = await Meme.findOne({ name: req.params.name });
+    console.log(meme);
+
+    if (meme) {
       res.json({
         status: true,
         data: {
-          memes,
+          meme,
         },
+      });
+    } else {
+      res.send({
+        status: false,
+        message: "meme not found",
       });
     }
   } catch (err) {
@@ -108,6 +124,7 @@ async function image(req: Request, res: Response) {
 
 export default {
   post,
-  get,
+  getAll,
+  getOne,
   image,
 };
