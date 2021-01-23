@@ -7,6 +7,10 @@ const memeSchema = new mongoose.Schema({
   filename: String,
   id: String,
   likes: Number,
+  secretMeme: {
+    type: Boolean,
+    default: false,
+  },
   votes: Number,
   createdAt: {
     type: Date,
