@@ -74,26 +74,7 @@ async function getAll(req: Request, res: Response) {
     console.log(err);
   }
 }
-async function getStats(req: Request, res: Response) {
-  const stats = await Meme.aggregate([
-    {
-      $match: {},
-    },
-    {
-      $group: {},
-    },
-    {
-      $sort: {},
-    },
-  ]);
 
-  res.status(200).json({
-    status: "success",
-    data: {
-      stats,
-    },
-  });
-}
 async function getOne(req: Request, res: Response) {
   try {
     console.log(req.params.id);
@@ -118,7 +99,28 @@ async function getOne(req: Request, res: Response) {
     console.log(err);
   }
 }
+async function getStats(req: Request, res: Response) {
+  const { date = "1900-01-01", likes, votes, views } = req.body;
+  const stats = await Meme.aggregate([
+    {
+      $match: { createdAfter: { $gte: new Date(`${date}-01-01`) } },
+    },
 
+    {
+      $group: {},
+    },
+    {
+      $sort: { likes: -1, votes: -1 },
+    },
+  ]);
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      stats,
+    },
+  });
+}
 async function image(req: Request, res: Response) {
   try {
     const id = req.params.id;
