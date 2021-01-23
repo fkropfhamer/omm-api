@@ -8,6 +8,11 @@ const memeSchema = new mongoose.Schema({
   id: String,
   likes: Number,
   votes: Number,
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+    select: false,
+  },
 });
 
 const Meme = mongoose.model("Meme", memeSchema);

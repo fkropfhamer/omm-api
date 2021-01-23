@@ -100,18 +100,20 @@ async function getOne(req: Request, res: Response) {
   }
 }
 async function getStats(req: Request, res: Response) {
-  const { date = "1900-01-01", likes, votes, views } = req.body;
+  const { createdAt, likes, votes, views } = req.body;
   const stats = await Meme.aggregate([
     {
-      $match: { createdAfter: { $gte: new Date(`${date}-01-01`) } },
+
+      $match: { createdAfter: { $gte: "$createdAt"}}
     },
 
     {
       $group: {},
     },
     {
+        
       $sort: { likes: -1, votes: -1 },
-    },
+    }
   ]);
 
   res.status(200).json({
