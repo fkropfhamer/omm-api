@@ -74,6 +74,26 @@ async function getAll(req: Request, res: Response) {
     console.log(err);
   }
 }
+async function getMemesStats(req: Request, res: Response) {
+  const stats = await Meme.aggregate([
+    {
+      $match: {},
+    },
+    {
+      $group: {},
+    },
+    {
+      $sort: {},
+    },
+  ]);
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      stats,
+    },
+  });
+}
 async function getOne(req: Request, res: Response) {
   try {
     console.log(req.params.id);
@@ -125,6 +145,7 @@ async function image(req: Request, res: Response) {
 export default {
   post,
   getAll,
+  getMemesStats,
   getOne,
   image,
 };
