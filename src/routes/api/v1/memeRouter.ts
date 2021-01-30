@@ -5,9 +5,11 @@ const router = express.Router();
 
 router.post("/", memeController.post);
 
-router.get("/", memeController.getAll);
-router.get("/stats", memeController.getStats);
-router.get("/:name", memeController.getOne);
+router.get("/", memeController.get);
 router.get("/image/:id", memeController.image);
+
+router.get("/search", memeController.getSome, memeController.getAll);
+//frontend: onHover/as a component
+router.get("/search/:name", memeController.getOne, memeController.getStats);
 
 export default router;

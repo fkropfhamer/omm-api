@@ -50,6 +50,37 @@ async function post(req: Request, res: Response) {
     console.log(err);
   }
 }
+async function get(req: Request, res: Response) {
+  try {
+    if (req.query.id && typeof req.query.id === "string") {
+      const meme = await Meme.findOne({ id: req.query.id }).exec();
+      if (meme) {
+        res.json({
+          status: true,
+          data: {
+            meme,
+          },
+        });
+      } else {
+        res.send({
+          status: false,
+          message: "meme not found",
+        });
+      }
+    } else {
+      const memes = await Meme.find({}).exec();
+      res.json({
+        status: true,
+        data: {
+          memes,
+        },
+      });
+    }
+  } catch (err) {
+    res.status(500).send(err);
+    console.log(err);
+  }
+}
 async function getAll(req: Request, res: Response) {
   try {
     const features = new APIfeatures(
@@ -98,11 +129,15 @@ async function getOne(req: Request, res: Response) {
     console.log(err);
   }
 }
-async function getSome(req: Request, res: Response) {
+async function getSome(req: Request, res: Response, next: Function) {
   //Tag/
   //regular expression
   try {
     console.log(req.body);
+
+    if (req.body.tags === []) {
+      next();
+    }
     const { tags, fileformat } = req.body;
     const memes = await Meme.find({ tags: tags, fileformat: fileformat });
     console.log(memes);
@@ -172,6 +207,7 @@ async function image(req: Request, res: Response) {
 
 export default {
   post,
+  get,
   getAll,
   getStats,
   getSome,
