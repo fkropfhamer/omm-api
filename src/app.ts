@@ -19,7 +19,7 @@ app.use(express.json());
 //app.use('/uploads', express.static('uploads'));
 
 //http parameter polution prevention
-//app.use(hpp({ whitelist: [some allowed keys as strings here...],}));
+//app.use(hpp({ whitelist: [some allowed keys as stringshere...],}));
 
 app.use("/status", (req, res) => res.json({ status: "ok" }));
 

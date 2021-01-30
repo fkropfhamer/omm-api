@@ -74,7 +74,6 @@ async function getAll(req: Request, res: Response) {
     console.log(err);
   }
 }
-
 async function getOne(req: Request, res: Response) {
   try {
     console.log(req.params.id);
@@ -99,21 +98,46 @@ async function getOne(req: Request, res: Response) {
     console.log(err);
   }
 }
+async function getSome(req: Request, res: Response) {
+  //Tag/
+  //regular expression
+  try {
+    console.log(req.body);
+    const { tags, fileformat } = req.body;
+    const memes = await Meme.find({ tags: tags, fileformat: fileformat });
+    console.log(memes);
+
+    if (memes) {
+      res.json({
+        status: true,
+        data: {
+          memes,
+        },
+      });
+    } else {
+      res.send({
+        status: false,
+        message: "memes with these formats/tags not found",
+      });
+    }
+  } catch (err) {
+    res.status(500).send(err);
+    console.log(err);
+  }
+}
 async function getStats(req: Request, res: Response) {
-  const { createdAt, likes, votes, views } = req.body;
+  const { createdAt, votes, views } = req.body;
   const stats = await Meme.aggregate([
     {
-
-      $match: { createdAfter: { $gte: "$createdAt"}}
+      $match: { createdAfter: { $gte: "$createdAt" } },
     },
 
     {
       $group: {},
     },
     {
-        
       $sort: { likes: -1, votes: -1 },
-    }
+    },
   ]);
 
   res.status(200).json({
@@ -150,6 +174,7 @@ export default {
   post,
   getAll,
   getStats,
+  getSome,
   getOne,
   image,
 };

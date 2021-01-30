@@ -3,19 +3,41 @@ import mongoose from "mongoose";
 const memeSchema = new mongoose.Schema({
   url: String,
   name: String,
-  views: Number,
   filename: String,
   id: String,
-  likes: Number,
-  secretMeme: {
-    type: Boolean,
-    default: false,
+  author: {
+    type: String,
+    default: "email@dummy.com",
   },
-  votes: Number,
+  tags: {
+    type: Array,
+    default: [],
+  },
+  fileformat: {
+    type: String,
+    default: "jpg",
+  },
+
+  views: {
+    type: Number,
+    default: 0,
+  },
+
+  votes: {
+    type: Array,
+    default: [],
+  },
+  comments: {
+    type: Array,
+    default: [],
+  },
+  secretMeme: {
+    type: String,
+    default: "public",
+  },
   createdAt: {
     type: Date,
     default: Date.now(),
-    select: false,
   },
 });
 

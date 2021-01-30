@@ -6,7 +6,7 @@ const router = express.Router();
 router.post("/", memeController.post);
 
 router.get("/", memeController.getAll);
-router.get("/tours-stats", memeController.getStats);
+router.get("/stats", memeController.getStats);
 router.get("/:name", memeController.getOne);
 router.get("/image/:id", memeController.image);
 
