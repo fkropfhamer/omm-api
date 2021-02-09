@@ -15,6 +15,14 @@ required:
 ## TEST
 `yarn test`
 
+## DOCKER 
+
+### START
+`docker compose -up`
+
+### START and REBUILD
+`docker compose -up --build`
+
 
 ## DEPENDENCIES
 
