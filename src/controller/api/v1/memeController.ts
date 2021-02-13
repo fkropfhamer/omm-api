@@ -171,7 +171,7 @@ async function getStats(req: Request, res: Response) {
       $group: {},
     },
     {
-      $sort: { likes: -1, votes: -1 },
+      $sort: { votes: -1, views: -1 },
     },
   ]);
 

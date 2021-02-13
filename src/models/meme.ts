@@ -9,10 +9,7 @@ const memeSchema = new mongoose.Schema({
     type: String,
     default: "email@dummy.com",
   },
-  tags: {
-    type: Array,
-    default: [],
-  },
+  tags: [String],
   fileformat: {
     type: String,
     default: "jpg",
@@ -27,10 +24,7 @@ const memeSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
-  comments: {
-    type: Array,
-    default: [],
-  },
+  comments: [String],
   secretMeme: {
     type: String,
     default: "public",
