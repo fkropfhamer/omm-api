@@ -1,24 +1,77 @@
-import express from 'express';
-import { v4 as uuidv4 } from 'uuid';
+import {Request, Response} from 'express';
 import User from '../../../models/user';
+import bcrypt from 'bcrypt';
+import { generateJWT } from '../../../authenticaton';
 
-function put(req: express.Request, res: express.Response) {
-    const user = new User({
-        name: 'testuser123',
-        password: '123'
-    });
+async function put(req: Request, res: Response) {
+    try {
+        const { username, password } = req.body;
 
-    user.save((err) => {
-        if (err) {
-            console.log(err)
+        const passwordHash = await bcrypt.hash(password, 10);
 
-            res.json({err})
+        const user = new User({
+            username,
+            password: passwordHash,
+        });
+    
+        await user.save();
+
+        res.json({
+            status: true,
+            message: 'user created',
+        });
+    } catch(err) {
+        res.status(500).send(err);
+        console.log(err);
+    }   
+}
+
+async function authenticate(req: Request, res: Response) {
+    try {
+        const { username, password } = req.body;
+
+        const user = await User.findOne({username}).exec() as any;
+
+        console.log(user);
+
+        if (user) {
+            if (await bcrypt.compare(password, user.password)) {
+
+                const token = generateJWT({ sub: user._id });
+
+                res.json({
+                    status: true,
+                    message: 'right',
+                    token
+                });
+            } else {
+                res.json({
+                    status: true,
+                    message: 'wrong password',
+                });
+            }
         } else {
-            res.json({status: 'success'});
+            res.json({
+                status: true,
+                message: 'no found',
+            });
         }
+
+        
+    } catch(err) {
+        res.status(500).send(err);
+        console.log(err);
+    }   
+}
+
+async function me(req: Request, res: Response) {
+    res.json({
+        data: res.locals.user
     })
 }
 
 export default {
-    put
+    put,
+    authenticate,
+    me,
 }

@@ -4,7 +4,10 @@ const templateSchema = new mongoose.Schema({
     url: String,
     name: String,
     mimetype: String,
-    size: String
+    size: String,
+    views: Number,
+    filename: String,
+    id: String,
 });
 
 const Template = mongoose.model('Template', templateSchema);

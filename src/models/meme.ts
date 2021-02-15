@@ -3,6 +3,9 @@ import mongoose from 'mongoose';
 const memeSchema = new mongoose.Schema({
     url: String,
     name: String,
+    views: Number,
+    filename: String,
+    id: String,
 });
 
 const Meme = mongoose.model('Meme', memeSchema);
