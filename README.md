@@ -18,10 +18,10 @@ required:
 ## DOCKER 
 
 ### START
-`docker compose -up`
+`docker-compose up`
 
 ### START and REBUILD
-`docker compose -up --build`
+`docker-compose up --build`
 
 
 ## DEPENDENCIES
