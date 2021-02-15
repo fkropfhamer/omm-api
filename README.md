@@ -1,4 +1,4 @@
-# MEMES API
+# OMM-API
 
 ## Getting started
 
