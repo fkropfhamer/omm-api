@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import Jimp from "jimp";
 import { Request, Response } from "express";
 import Meme from "../../../models/meme";
-import APIfeatures from "../../../utils/APIfeatures";
+import apiFeatures from "../../../utils/APIFeatures";
 import { resolve } from "path";
 
 async function post(req: Request, res: Response) {
@@ -83,7 +83,7 @@ async function get(req: Request, res: Response) {
 }
 async function getAll(req: Request, res: Response) {
   try {
-    const features = new APIfeatures(
+    const features = new apiFeatures(
       //query middleware is excuted here
       Meme.find(),
       req.query
@@ -138,6 +138,8 @@ async function getSome(req: Request, res: Response, next: Function) {
     if (req.body.tags === []) {
       next();
     }
+    //make a deep copy
+
     const { tags, fileformat } = req.body;
     const memes = await Meme.find({ tags: tags, fileformat: fileformat });
     console.log(memes);
@@ -161,10 +163,11 @@ async function getSome(req: Request, res: Response, next: Function) {
   }
 }
 async function getStats(req: Request, res: Response) {
-  const { createdAt, votes, views } = req.body;
+  const { views, votes } = req.body;
+  const numVotes = votes.length;
   const stats = await Meme.aggregate([
     {
-      $match: { createdAfter: { $gte: "$createdAt" } },
+      $match: {},
     },
 
     {

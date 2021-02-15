@@ -1,4 +1,4 @@
-class APIfeatures {
+class apiFeatures {
   constructor(query_db, query_req) {
     this.query_db = query_db;
     this.query_req = query_req;
@@ -53,4 +53,4 @@ class APIfeatures {
   }
 }
 
-module.exports = APIfeatures;
+module.exports = apiFeatures;
