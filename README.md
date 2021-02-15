@@ -2,9 +2,9 @@
 
 ## Getting started
 
-If using docker refer to [docker](##Docker)
+If using docker refer to [docker](#Docker)
 
-For development install the [requirements](##Requirements).
+For development install the [requirements](#Requirements).
 Then execute the following steps:
 1. Install the node dependencies with `yarn`
 2. Start the development server with `yarn start`
