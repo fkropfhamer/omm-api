@@ -31,6 +31,7 @@ async function post(req: Request, res: Response) {
             url: fileUrl,
             name,
             views: 0,
+            votes: 0,
             filename
         })
 

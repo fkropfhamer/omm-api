@@ -33,6 +33,7 @@ async function post(req: Request, res: Response) {
                     mimetype,
                     size,
                     views: 0,
+                    votes: 0,
                     filename,
                 })
 

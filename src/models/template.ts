@@ -6,6 +6,7 @@ const templateSchema = new mongoose.Schema({
     mimetype: String,
     size: String,
     views: Number,
+    votes: Number,
     filename: String,
     id: String,
 });
