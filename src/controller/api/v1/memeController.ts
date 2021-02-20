@@ -7,7 +7,8 @@ import { resolve } from "path";
 
 async function post(req: Request, res: Response) {
   try {
-    const { url = "", bottom = "", top = "" } = req.body;
+    const { url = "", bottom = "", top = "" ,isPrivate} = req.body;
+    console.log(req.body)
     let { name } = req.body;
 
     const font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK);
@@ -32,7 +33,8 @@ async function post(req: Request, res: Response) {
       name,
       views: 0,
       filename,
-      createdAt: Date.now()
+      createdAt: Date.now(),
+      secretMeme:isPrivate
     });
 
     await meme.save();
@@ -53,6 +55,7 @@ async function post(req: Request, res: Response) {
 }
 async function get(req: Request, res: Response) {
   try {
+    
     if (req.query.id && typeof req.query.id === "string") {
       const meme = await Meme.findOne({ id: req.query.id }).exec();
       if (meme) {
@@ -69,7 +72,7 @@ async function get(req: Request, res: Response) {
         });
       }
     } else {
-      const memes = await Meme.find({}).exec();
+      const memes = await Meme.find({ secretMeme: { $ne: true } }).exec();
       res.json({
         status: true,
         data: {
@@ -86,7 +89,7 @@ async function getAll(req: Request, res: Response) {
   try {
     const features = new apiFeatures(
       //query middleware is excuted here
-      Meme.find(),
+      Meme.find({ secretMeme: { $ne: true } }),
       req.query
     )
       .filter()
@@ -109,7 +112,7 @@ async function getAll(req: Request, res: Response) {
 async function getOne(req: Request, res: Response) {
   try {
     console.log(req.params.id);
-    const meme = await Meme.findOne({ name: req.params.name });
+    const meme = await Meme.findOne({ name: req.params.name, secretMeme: { $ne: true } });
     console.log(meme);
 
     if (meme) {
