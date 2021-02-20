@@ -34,7 +34,7 @@ const memeSchema = new mongoose.Schema({
     default: Date.now(),
   },
 });
-//before getAll/getOne
+/* //before getAll/getOne
 memeSchema.pre(/^find/, function (next) {
   this.find({ secretMeme: { $ne: true } });
   this.start = Date.now();
@@ -43,7 +43,7 @@ memeSchema.pre(/^find/, function (next) {
 memeSchema.post(/^find/, function (next) {
   console.log(`Query took ${Date.now() - this.start}`);
   next();
-});
+}); */
 
 const Meme = mongoose.model("Meme", memeSchema);
 

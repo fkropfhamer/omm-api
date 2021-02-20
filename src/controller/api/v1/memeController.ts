@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import Jimp from "jimp";
 import { Request, Response } from "express";
 import Meme from "../../../models/meme";
-import apiFeatures from "../../../utils/APIFeatures";
+import apiFeatures from "../../../utils/apiFeatures";
 import { resolve } from "path";
 
 async function post(req: Request, res: Response) {
@@ -32,6 +32,7 @@ async function post(req: Request, res: Response) {
       name,
       views: 0,
       filename,
+      createdAt: Date.now()
     });
 
     await meme.save();
