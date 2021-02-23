@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 export function connectDb() {
     const db_uri = process.env.MONGODB_URI || "localhost";
