@@ -1,5 +1,8 @@
 class apiFeatures {
-  constructor(query_db, query_req) {
+  public query_db: any
+  public query_req: any
+
+  constructor(query_db: any, query_req: any) {
     this.query_db = query_db;
     this.query_req = query_req;
   }
