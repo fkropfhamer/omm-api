@@ -8,7 +8,7 @@ router.post("/", memeController.post);
 router.get("/", memeController.get);
 router.get("/image/:id", memeController.image);
 
-router.get("/search", memeController.getSome, memeController.getAll);
+router.get("/sort/:sortBy", memeController.getAll);
 //frontend: onHover/as a component
 router.get("/search/:name", memeController.getOne, memeController.getStats);
 

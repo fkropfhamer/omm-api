@@ -87,17 +87,7 @@ async function get(req: Request, res: Response) {
 }
 async function getAll(req: Request, res: Response) {
   try {
-    const features = new apiFeatures(
-      //query middleware is excuted here
-      Meme.find({ secretMeme: { $ne: true } }),
-      req.query
-    )
-      .filter()
-      .sort()
-      .select()
-      .paginate();
-    const memes = await features.query_db;
-
+    const memes = await Meme.find({ secretMeme: { $ne: true } }).sort(`-${req.params.sortBy}`)
     res.json({
       status: true,
       data: {
