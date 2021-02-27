@@ -1,22 +1,50 @@
-# MEMES API
+# OMM-API
 
-## INSTALL
-required:
+## Getting started
+
+If using docker refer to [docker](#Docker)
+
+For development install the [requirements](#Requirements).
+Then execute the following steps:
+1. Install the node dependencies with `yarn`
+2. Start the development server with `yarn start`
+3. The api should be up and available on `localhost:8000` 
+
+## Requirements
 - node 
 - mongodb 
 - yarn
 
+## Scripts
+
+## Install
+
+install node dependencies
 
 `yarn install`
 
-## START
+## Start
+
+start local development server
+
 `yarn start`
 
-## TEST
+## Test
+
+run unittests
+
 `yarn test`
 
+## Docker 
 
-## DEPENDENCIES
+### Start
+`docker-compose up`
+
+### Build and start
+`docker-compose up --build`
+
+
+## Dependencies
 
 | Name        | License       | Description  | Link |
 | ------------- | ------------- | ----- | ------- |

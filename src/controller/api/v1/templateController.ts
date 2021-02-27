@@ -19,10 +19,10 @@ async function post(req: Request, res: Response) {
                 await page.screenshot({
                     path: './uploads/templates/' + filename
                 });
-                await browser.close();
+                browser.close();
 
                 const url = 'http://localhost:8000/api/v1/template/image/' + id;
-                const name = 'unnamed';
+                const name = `screenshot of ${req.body.url}`;
                 const mimetype = 'jpeg';
                 const size = 'unknown';
 

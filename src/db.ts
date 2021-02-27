@@ -1,6 +1,8 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 export function connectDb() {
-    return mongoose.connect('mongodb://localhost/memes', {useNewUrlParser: true, useUnifiedTopology: true});
+    const db_uri = process.env.MONGODB_URI || "localhost";
+
+    return mongoose.connect(`mongodb://${db_uri}/memes`, {useNewUrlParser: true, useUnifiedTopology: true});
 };
 

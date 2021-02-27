@@ -7,6 +7,6 @@
     "watch": [
       "src"
     ],
-    "exec": "npm run build && node build/index.js",
+    "exec": "yarn build && node build/index.js",
     "ext": "ts"
 }
