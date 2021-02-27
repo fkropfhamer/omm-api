@@ -32,6 +32,8 @@ async function post(req: Request, res: Response) {
       url: fileUrl,
       name,
       views: 0,
+      likes:0,
+      dislikes:0,
       filename,
       createdAt: Date.now(),
       secretMeme:isPrivate
@@ -157,7 +159,7 @@ async function getSome(req: Request, res: Response, next: Function) {
   }
 }
 async function getStats(req: Request, res: Response) {
-  const { views, votes } = req.body;
+  const { views, votes} = req.body;
   const numVotes = votes.length;
   const stats = await Meme.aggregate([
     {
@@ -187,7 +189,6 @@ async function image(req: Request, res: Response) {
 
     if (meme) {
       meme.views += 1;
-
       meme.save();
 
       res.sendFile(resolve(`./uploads/memes/${meme.filename}`));
