@@ -5,13 +5,16 @@ import Meme from "../../../models/meme";
 import { resolve } from "path";
 import { createCanvas, loadImage } from "canvas";
 import fs from "fs";
+import AdmZip from 'adm-zip';
 
 async function postMultiple(req: Request, res: Response) {
   try {
     const { urls = [], texts = [], isPrivate } = req.body;
     console.log(req.body);
     let { name } = req.body;
+    
 
+    const zip = new AdmZip();
     const images: any[] = [];
 
     urls.forEach(async (url: any) => {
@@ -44,6 +47,8 @@ async function postMultiple(req: Request, res: Response) {
         out.on("finish", async () => {
           console.log("The JPEG file was created.");
 
+          zip.addLocalFile("./uploads/memes/" + filename);
+
           const meme = new Meme({
             id,
             url: fileUrl,
@@ -58,6 +63,8 @@ async function postMultiple(req: Request, res: Response) {
 
           images.push({ id, url: fileUrl, name });
           if (images.length === urls.length * texts.length) {
+            res.type('zip')
+            res.send(zip.toBuffer())
             res.json({
               status: true,
               message: "memes created",
