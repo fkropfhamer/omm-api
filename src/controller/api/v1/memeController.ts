@@ -2,7 +2,6 @@ import { v4 as uuidv4 } from "uuid";
 import Jimp from "jimp";
 import { Request, Response } from "express";
 import Meme from "../../../models/meme";
-import apiFeatures from "../../../utils/APIFeatures";
 import { resolve } from "path";
 
 async function post(req: Request, res: Response) {
@@ -13,8 +12,16 @@ async function post(req: Request, res: Response) {
 
     const font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK);
     const image = await Jimp.read(url);
-    image.print(font, 10, 10, top);
-    image.print(font, 100, 100, bottom);
+    image.print(font, 0, 0, {
+      text: top,
+      alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER,
+      alignmentY: Jimp.VERTICAL_ALIGN_TOP,
+    }, image.bitmap.width, image.bitmap.height);
+    image.print(font, 0, 0, {
+      text: bottom,
+      alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER,
+      alignmentY: Jimp.VERTICAL_ALIGN_BOTTOM,
+    }, image.bitmap.width, image.bitmap.height);
 
     const id = uuidv4();
 
