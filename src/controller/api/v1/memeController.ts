@@ -3,8 +3,75 @@ import Jimp from "jimp";
 import { Request, Response } from "express";
 import Meme from "../../../models/meme";
 import { resolve } from "path";
+import { createCanvas, loadImage } from 'canvas';
+import fs from 'fs';
 
 async function post(req: Request, res: Response) {
+  try {
+    const { url = "", texts = [] ,isPrivate} = req.body;
+    console.log(req.body)
+    let { name } = req.body;
+
+    const canvas = createCanvas(500, 500);
+    const ctx = canvas.getContext('2d');
+    const image = await loadImage(url)
+    ctx.drawImage(image, 0, 0, 500, 500);
+
+    ctx.textAlign = "center";
+
+    texts.forEach((text: any) => {
+      ctx.font = text.size + "px Comic Sans MS" + text.isBold + text.isItalic;
+      ctx.fillStyle = text.hexColor;
+      ctx.fillText(text.text, text.x, text.y);
+    })
+
+    const id = uuidv4();
+
+    if (!name) {
+      name = id;
+    }
+
+    const filename = id + ".jpeg";
+    const fileUrl = "http://localhost:8000/api/v1/meme/image/" + id;
+
+    const out = fs.createWriteStream("./uploads/memes/" + filename);
+    const stream = canvas.createJPEGStream()
+    stream.pipe(out)
+    out.on('finish', async () =>  {
+      console.log('The JPEG file was created.')
+
+      const meme = new Meme({
+        id,
+        url: fileUrl,
+        name,
+        views: 0,
+        filename,
+        createdAt: Date.now(),
+        secretMeme:isPrivate
+      });
+  
+      await meme.save();
+  
+      res.json({
+        status: true,
+        message: "meme created",
+        data: {
+          id,
+          url: fileUrl,
+          name,
+        },
+      });
+
+
+
+    });
+  } catch (err) {
+    res.status(500).send(err);
+    console.log(err);
+  }
+}
+
+async function postSimple(req: Request, res: Response) {
   try {
     const { url = "", bottom = "", top = "" ,isPrivate} = req.body;
     console.log(req.body)
@@ -60,6 +127,8 @@ async function post(req: Request, res: Response) {
     console.log(err);
   }
 }
+
+
 async function get(req: Request, res: Response) {
   try {
     
@@ -211,6 +280,7 @@ async function image(req: Request, res: Response) {
 
 export default {
   post,
+  postSimple,
   get,
   getAll,
   getStats,
