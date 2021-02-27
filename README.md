@@ -48,6 +48,7 @@ run unittests
 
 | Name        | License       | Description  | Link |
 | ------------- | ------------- | ----- | ------- |
+| adm-zip | MIT | ADM-ZIP is a pure JavaScript implementation for zip data compression for NodeJS. | https://www.npmjs.com/package/adm-zip |
 | bcrypt     | MIT | A library to help you hash passwords. | https://www.npmjs.com/package/bcrypt |
 | canvas | MIT | node-canvas is a Cairo-backed Canvas implementation for Node.js. | https://www.npmjs.com/package/canvas |
 | cors      | MIT   | CORS is a node.js package for providing a Connect/Express middleware that can be used to enable CORS with various options.  | https://www.npmjs.com/package/cors |
