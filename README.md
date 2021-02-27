@@ -49,6 +49,7 @@ run unittests
 | Name        | License       | Description  | Link |
 | ------------- | ------------- | ----- | ------- |
 | bcrypt     | MIT | A library to help you hash passwords. | https://www.npmjs.com/package/bcrypt |
+| canvas | MIT | node-canvas is a Cairo-backed Canvas implementation for Node.js. | https://www.npmjs.com/package/canvas |
 | cors      | MIT   | CORS is a node.js package for providing a Connect/Express middleware that can be used to enable CORS with various options.  | https://www.npmjs.com/package/cors |
 | express |  MIT |   Fast, unopinionated, minimalist web framework for node.  | https://www.npmjs.com/package/express |
 | express-fileupload | MIT |  Simple express middleware for uploading files. | https://www.npmjs.com/package/express-fileupload |
