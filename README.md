@@ -52,11 +52,11 @@ run unittests
 | cors      | MIT   | CORS is a node.js package for providing a Connect/Express middleware that can be used to enable CORS with various options.  | https://www.npmjs.com/package/cors |
 | express |  MIT |   Fast, unopinionated, minimalist web framework for node.  | https://www.npmjs.com/package/express |
 | express-fileupload | MIT |  Simple express middleware for uploading files. | https://www.npmjs.com/package/express-fileupload |
-| hpp | ISC | Express middleware to protect against HTTP Parameter Pollution attacks |
+| hpp | ISC | Express middleware to protect against HTTP Parameter Pollution attacks | https://www.npmjs.com/package/hpp |
 | jimp | MIT | An image processing library for Node written entirely in JavaScript, with zero native dependencies. | https://www.npmjs.com/package/jimp |
 | jsonwebtoken | MIT | An implementation of JSON Web Tokens. | https://www.npmjs.com/package/jsonwebtoken |
 | mongoose | MIT | Mongoose is a MongoDB object modeling tool designed to work in an asynchronous environment. Mongoose supports both promises and callbacks. | https://www.npmjs.com/package/mongoose |
-| puppeteer | Apache-2.0 | A high-level API to control headless Chrome over the DevTools Protocol. |
+| puppeteer | Apache-2.0 | A high-level API to control headless Chrome over the DevTools Protocol. | https://github.com/puppeteer/puppeteer#readme |
 | uuid | MIT | For the creation of RFC4122 UUIDs | https://www.npmjs.com/package/uuid |
 | jest | MIT | Delightful JavaScript Testing | https://www.npmjs.com/package/jest |
 | nodemon | MIT | nodemon is a tool that helps develop node.js based applications by automatically restarting the node application when file changes in the directory are detected. | https://www.npmjs.com/package/nodemon |
