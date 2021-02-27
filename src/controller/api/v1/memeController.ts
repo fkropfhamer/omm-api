@@ -2,19 +2,180 @@ import { v4 as uuidv4 } from "uuid";
 import Jimp from "jimp";
 import { Request, Response } from "express";
 import Meme from "../../../models/meme";
-import apiFeatures from "../../../utils/APIFeatures";
 import { resolve } from "path";
+import { createCanvas, loadImage } from "canvas";
+import fs from "fs";
+import AdmZip from 'adm-zip';
+
+async function postMultiple(req: Request, res: Response) {
+  try {
+    const { urls = [], texts = [], isPrivate } = req.body;
+    console.log(req.body);
+    let { name } = req.body;
+    
+
+    const zip = new AdmZip();
+    const images: any[] = [];
+
+    urls.forEach(async (url: any) => {
+      texts.forEach(async (text: any) => {
+        const canvas = createCanvas(500, 500);
+        const ctx = canvas.getContext("2d");
+        const image = await loadImage(url);
+        ctx.drawImage(image, 0, 0, 500, 500);
+
+        ctx.textAlign = "center";
+
+        text.forEach((t: any) => {
+          ctx.font = t.size + "px Comic Sans MS" + t.isBold + t.isItalic;
+          ctx.fillStyle = t.hexColor;
+          ctx.fillText(t.text, t.x, t.y);
+        });
+
+        const id = uuidv4();
+
+        if (!name) {
+          name = id;
+        }
+
+        const filename = id + ".jpeg";
+        const fileUrl = "http://localhost:8000/api/v1/meme/image/" + id;
+
+        const out = fs.createWriteStream("./uploads/memes/" + filename);
+        const stream = canvas.createJPEGStream();
+        stream.pipe(out);
+        out.on("finish", async () => {
+          console.log("The JPEG file was created.");
+
+          zip.addLocalFile("./uploads/memes/" + filename);
+
+          const meme = new Meme({
+            id,
+            url: fileUrl,
+            name,
+            views: 0,
+            filename,
+            createdAt: Date.now(),
+            secretMeme: isPrivate,
+          });
+
+          await meme.save();
+
+          images.push({ id, url: fileUrl, name });
+          if (images.length === urls.length * texts.length) {
+            res.type('zip')
+            res.send(zip.toBuffer())
+            res.json({
+              status: true,
+              message: "memes created",
+              data: {
+                images,
+              },
+            });
+          }
+        });
+      });
+    });
+  } catch (err) {
+    res.status(500).send(err);
+    console.log(err);
+  }
+}
 
 async function post(req: Request, res: Response) {
   try {
-    const { url = "", bottom = "", top = "" ,isPrivate} = req.body;
-    console.log(req.body)
+    const { url = "", texts = [], isPrivate } = req.body;
+    console.log(req.body);
+    let { name } = req.body;
+
+    const canvas = createCanvas(500, 500);
+    const ctx = canvas.getContext("2d");
+    const image = await loadImage(url);
+    ctx.drawImage(image, 0, 0, 500, 500);
+
+    ctx.textAlign = "center";
+
+    texts.forEach((text: any) => {
+      ctx.font = text.size + "px Comic Sans MS" + text.isBold + text.isItalic;
+      ctx.fillStyle = text.hexColor;
+      ctx.fillText(text.text, text.x, text.y);
+    });
+
+    const id = uuidv4();
+
+    if (!name) {
+      name = id;
+    }
+
+    const filename = id + ".jpeg";
+    const fileUrl = "http://localhost:8000/api/v1/meme/image/" + id;
+
+    const out = fs.createWriteStream("./uploads/memes/" + filename);
+    const stream = canvas.createJPEGStream();
+    stream.pipe(out);
+    out.on("finish", async () => {
+      console.log("The JPEG file was created.");
+
+      const meme = new Meme({
+        id,
+        url: fileUrl,
+        name,
+        views: 0,
+        filename,
+        createdAt: Date.now(),
+        secretMeme: isPrivate,
+      });
+
+      await meme.save();
+
+      res.json({
+        status: true,
+        message: "meme created",
+        data: {
+          id,
+          url: fileUrl,
+          name,
+        },
+      });
+    });
+  } catch (err) {
+    res.status(500).send(err);
+    console.log(err);
+  }
+}
+
+async function postSimple(req: Request, res: Response) {
+  try {
+    const { url = "", bottom = "", top = "", isPrivate } = req.body;
+    console.log(req.body);
     let { name } = req.body;
 
     const font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK);
     const image = await Jimp.read(url);
-    image.print(font, 10, 10, top);
-    image.print(font, 100, 100, bottom);
+    image.print(
+      font,
+      0,
+      10,
+      {
+        text: top,
+        alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER,
+        alignmentY: Jimp.VERTICAL_ALIGN_TOP,
+      },
+      image.bitmap.width,
+      image.bitmap.height
+    );
+    image.print(
+      font,
+      0,
+      -10,
+      {
+        text: bottom,
+        alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER,
+        alignmentY: Jimp.VERTICAL_ALIGN_BOTTOM,
+      },
+      image.bitmap.width,
+      image.bitmap.height
+    );
 
     const id = uuidv4();
 
@@ -34,7 +195,7 @@ async function post(req: Request, res: Response) {
       views: 0,
       filename,
       createdAt: Date.now(),
-      secretMeme:isPrivate
+      secretMeme: isPrivate,
     });
 
     await meme.save();
@@ -53,9 +214,9 @@ async function post(req: Request, res: Response) {
     console.log(err);
   }
 }
+
 async function get(req: Request, res: Response) {
   try {
-    
     if (req.query.id && typeof req.query.id === "string") {
       const meme = await Meme.findOne({ id: req.query.id }).exec();
       if (meme) {
@@ -87,7 +248,9 @@ async function get(req: Request, res: Response) {
 }
 async function getAll(req: Request, res: Response) {
   try {
-    const memes = await Meme.find({ secretMeme: { $ne: true } }).sort(`-${req.params.sortBy}`)
+    const memes = await Meme.find({ secretMeme: { $ne: true } }).sort(
+      `-${req.params.sortBy}`
+    );
     res.json({
       status: true,
       data: {
@@ -102,7 +265,10 @@ async function getAll(req: Request, res: Response) {
 async function getOne(req: Request, res: Response) {
   try {
     console.log(req.params.id);
-    const meme = await Meme.findOne({ name: req.params.name, secretMeme: { $ne: true } });
+    const meme = await Meme.findOne({
+      name: req.params.name,
+      secretMeme: { $ne: true },
+    });
     console.log(meme);
 
     if (meme) {
@@ -203,7 +369,9 @@ async function image(req: Request, res: Response) {
 }
 
 export default {
+  postMultiple,
   post,
+  postSimple,
   get,
   getAll,
   getStats,
