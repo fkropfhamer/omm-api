@@ -369,6 +369,81 @@ async function image(req: Request, res: Response) {
   }
 }
 
+async function like(req: Request, res: Response) {
+  try {
+    const { id } = req.body;
+
+    const meme = (await Meme.findOne({ id }).exec()) as any;
+
+    if (meme) {
+      meme.likes += 1;
+      meme.save();
+
+      res.json({
+        status: true,
+        message: "meme liked"
+      })
+    } else {
+      res.json({
+        status: false,
+        message: "meme not found :(",
+      });
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
+}
+
+async function dislike(req: Request, res: Response) {
+  try {
+    const { id } = req.body;
+
+    const meme = (await Meme.findOne({ id }).exec()) as any;
+
+    if (meme) {
+      meme.dislikes += 1;
+      meme.save();
+
+      res.json({
+        status: true,
+        message: "meme disliked"
+      })
+    } else {
+      res.json({
+        status: false,
+        message: "meme not found :(",
+      });
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
+}
+
+async function comment(req: Request, res: Response) {
+  try {
+    const { id, comment } = req.body;
+
+    const meme = (await Meme.findOne({ id }).exec()) as any;
+
+    if (meme) {
+      meme.comments.push(comment);
+      meme.save();
+
+      res.json({
+        status: true,
+        message: "comment saved"
+      })
+    } else {
+      res.json({
+        status: false,
+        message: "meme not found :(",
+      });
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
+}
+
 export default {
   postMultiple,
   post,
@@ -379,4 +454,7 @@ export default {
   getSome,
   getOne,
   image,
+  like,
+  dislike,
+  comment,
 };

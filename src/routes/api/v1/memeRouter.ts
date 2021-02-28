@@ -6,6 +6,9 @@ const router = express.Router();
 router.post("/", memeController.post);
 router.post("/simple", memeController.postSimple);
 router.post("/multiple", memeController.postMultiple);
+router.post("/like", memeController.like);
+router.post("/dislike", memeController.dislike);
+router.post("/comment", memeController.comment);
 
 router.get("/", memeController.get);
 router.get("/image/:id", memeController.image);
