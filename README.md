@@ -64,6 +64,7 @@ run unittests
 | nodemon | MIT | nodemon is a tool that helps develop node.js based applications by automatically restarting the node application when file changes in the directory are detected. | https://www.npmjs.com/package/nodemon |
 | supertest | MIT | The motivation with this module is to provide a high-level abstraction for testing HTTP, while still allowing you to drop down to the lower-level API provided by superagent. | https://www.npmjs.com/package/supertest |
 | ts-jest | MIT | A TypeScript preprocessor with source map support for Jest that lets you use Jest to test projects written in TypeScript. | https://www.npmjs.com/package/ts-jest |
+| mockingoose | The Unlicense | A Jest package for mocking mongoose models | https://www.npmjs.com/package/mockingoose |
 | typescript | Apache-2.0 | TypeScript is a language for application-scale JavaScript. TypeScript adds optional types to JavaScript that support tools for large-scale JavaScript applications for any browser, for any host, on any OS. TypeScript compiles to readable, standards-based JavaScript. | https://www.npmjs.com/package/typescript |
 
 Additionally the corresponding typescript types from https://github.com/DefinitelyTyped/DefinitelyTyped. 
