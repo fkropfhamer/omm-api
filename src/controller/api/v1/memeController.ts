@@ -193,6 +193,8 @@ async function postSimple(req: Request, res: Response) {
       url: fileUrl,
       name,
       views: 0,
+      likes:0,
+      dislikes:0,
       filename,
       createdAt: Date.now(),
       secretMeme: isPrivate,
@@ -323,7 +325,7 @@ async function getSome(req: Request, res: Response, next: Function) {
   }
 }
 async function getStats(req: Request, res: Response) {
-  const { views, votes } = req.body;
+  const { views, votes} = req.body;
   const numVotes = votes.length;
   const stats = await Meme.aggregate([
     {
@@ -353,7 +355,6 @@ async function image(req: Request, res: Response) {
 
     if (meme) {
       meme.views += 1;
-
       meme.save();
 
       res.sendFile(resolve(`./uploads/memes/${meme.filename}`));
@@ -361,6 +362,81 @@ async function image(req: Request, res: Response) {
       res.json({
         status: true,
         message: "image not found :(",
+      });
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
+}
+
+async function like(req: Request, res: Response) {
+  try {
+    const { id } = req.body;
+
+    const meme = (await Meme.findOne({ id }).exec()) as any;
+
+    if (meme) {
+      meme.likes += 1;
+      meme.save();
+
+      res.json({
+        status: true,
+        message: "meme liked"
+      })
+    } else {
+      res.json({
+        status: false,
+        message: "meme not found :(",
+      });
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
+}
+
+async function dislike(req: Request, res: Response) {
+  try {
+    const { id } = req.body;
+
+    const meme = (await Meme.findOne({ id }).exec()) as any;
+
+    if (meme) {
+      meme.dislikes += 1;
+      meme.save();
+
+      res.json({
+        status: true,
+        message: "meme disliked"
+      })
+    } else {
+      res.json({
+        status: false,
+        message: "meme not found :(",
+      });
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
+}
+
+async function comment(req: Request, res: Response) {
+  try {
+    const { id, comment } = req.body;
+
+    const meme = (await Meme.findOne({ id }).exec()) as any;
+
+    if (meme) {
+      meme.comments.push(comment);
+      meme.save();
+
+      res.json({
+        status: true,
+        message: "comment saved"
+      })
+    } else {
+      res.json({
+        status: false,
+        message: "meme not found :(",
       });
     }
   } catch (err) {
@@ -378,4 +454,7 @@ export default {
   getSome,
   getOne,
   image,
+  like,
+  dislike,
+  comment,
 };

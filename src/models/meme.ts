@@ -24,6 +24,14 @@ const memeSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
+  likes: {
+    type: Number,
+    default: 0,
+  },
+  dislikes: {
+    type: Number,
+    default: 0,
+  },
   comments: [String],
   secretMeme: {
     type: Boolean,
